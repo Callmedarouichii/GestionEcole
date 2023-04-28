@@ -9,7 +9,21 @@ class EleveController extends Controller
 {
     public function index()
     {
-        $eleves = Eleve::all();
+       
+        $eleves = Eleve::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $eleves->where('nom', 'like', "%$search%")
+                  ->orWhere('prenom', 'like', "%$search%");
+        }
+
+
+        if ($request->has('sort') && $request->sort == 'nom') {
+            $sort = $request->sort;
+            $order = $request->has('order') && $request->order == 'desc' ? 'desc' : 'asc';
+            $eleves->orderBy($sort, $order);
+        }
         return view('eleves.index', compact('eleves'));
     }
 
@@ -69,4 +83,7 @@ class EleveController extends Controller
         return redirect()->route('eleves.index')
             ->with('success', 'Eleve deleted successfully');
     }
+
+
+
 }

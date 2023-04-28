@@ -11,6 +11,27 @@
             <a href="{{url('admin/eleves/create')}}" class="btn btn-success btn-sm">Add new student</a>
         </div>
         <div class="card-body">
+            <div>
+                <div>
+                    <a href="{{ route('eleves.index', ['sort' => 'nom', 'order' => 'asc']) }}"
+                       class="font-medium text-gray-600 hover:text-gray-800 {{ request('sort') == 'nom' && request('order') == 'asc' ? 'underline' : '' }}">
+                        Nom A-Z
+                    </a>
+                    <span class="mx-2 text-gray-400">|</span>
+                    <a href="{{ route('eleves.index', ['sort' => 'nom', 'order' => 'desc']) }}"
+                       class="font-medium text-gray-600 hover:text-gray-800 {{ request('sort') == 'nom' && request('order') == 'desc' ? 'underline' : '' }}">
+                        Nom Z-A
+                    </a>
+                </div>
+            <div>
+                <form action="{{ route('eleves.index') }}" method="GET">
+                    <div class="flex items-center mb-4">
+                        <label for="search" class="mr-2">Rechercher:</label>
+                        <input type="text" name="search" id="search" value="{{ request()->input('search') }}" class="border p-1">
+                        <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded ml-2">Rechercher</button>
+                    </div>
+                </form>
+            </div>
             @if(Session::has('success'))
             <p class="text-success">{{session('success')}}</p>
             @endif
